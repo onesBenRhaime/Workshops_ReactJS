@@ -1,13 +1,13 @@
 import "./App.css";
-import Counter from "./components/Counter";
-import Header from "./components/Header";
-import Products from "./components/Products";
-import Events from "./components/Events";
 import { Route, Routes } from "react-router-dom";
-import { EventsDetails } from "./components/EventsDetails";
-import { Dashboard } from "./components/Dashboard";
-import { Users } from "./components/Users";
-import { useState } from "react";
+import React, { Suspense, useState } from "react";
+const Header = React.lazy(() => import("./components/Header"));
+const Counter = React.lazy(() => import("./components/Counter"));
+const Products = React.lazy(() => import("./components/Products"));
+const Events = React.lazy(() => import("./components/Events"));
+const EventsDetails = React.lazy(() => import("./components/EventsDetails"));
+const Dashboard = React.lazy(() => import("./components/Dashboard"));
+const Users = React.lazy(() => import("./components/Users"));
 
 function App() {
 	// const [show, setShow] = useState(true);
@@ -66,23 +66,25 @@ function App() {
 			{/* <Events /> */}
 
 			{/*  Router With react */}
-			<Header />
-			<Routes>
-				{/*{role == "admin" ? (
+			<Suspense fallback={<h1> Loading</h1>}>
+				<Header />
+				<Routes>
+					{/*{role == "admin" ? (
 					<Route path="/admin" element={<Dashboard />}>
 					 <Route path="users" element={<Users />} />
 					</Route>
 				) : ()}
 				*/}
 
-				<Route path="/events">
-					<Route index element={<Events />} />
-					<Route path=":id/:title" element={<EventsDetails />} />
-				</Route>
-				<Route path="/products" element={<Products />} />
-				<Route path="/counter" element={<Counter />} />
-				{/* <Route path="*" element={<h1>NotFound</h1>} /> */}
-			</Routes>
+					<Route path="/events">
+						<Route index element={<Events />} />
+						<Route path=":id/:title" element={<EventsDetails />} />
+					</Route>
+					<Route path="/products" element={<Products />} />
+					<Route path="/counter" element={<Counter />} />
+					{/* <Route path="*" element={<h1>NotFound</h1>} /> */}
+				</Routes>
+			</Suspense>
 		</>
 	);
 }
